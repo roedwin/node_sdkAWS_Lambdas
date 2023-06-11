@@ -1,0 +1,61 @@
+service: aws-lambda
+frameworkVersion: '2 || 3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  lambdaHashingVersion: '20201221'
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:us-east-1:567595707774:table/CarTable
+
+functions:
+  CreateCar:
+    handler: src/CreateCar.addCar
+    events:
+      - httpApi:
+          path: /car
+          method: post
+  GetCars:
+    handler: src/GetCars.getCars
+    events:
+      - httpApi:
+          path: /cars
+          method: get
+  GetCar:
+    handler: src/GetCar.getCar
+    events:
+      - httpApi:
+          path: /cars/{id}
+          method: get
+  UpdateCar:
+    handler: src/UpdateCar.updateCar
+    events:
+      - httpApi:
+          path: /cars/{id}
+          method: put
+  DeleteCar:
+    handler: src/DeleteCar.deleteCar
+    events:
+      - httpApi:
+          path: /cars/{id}
+          method: delete
+
+
+resources:
+  Resources:
+    CarTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: CarTable
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH

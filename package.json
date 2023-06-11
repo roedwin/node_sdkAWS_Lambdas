@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@middy/core": "^4.4.3",
+    "@middy/http-json-body-parser": "^4.4.3",
+    "aws-sdk": "^2.1384.0",
+    "uuid": "^9.0.0"
+  }
+}
